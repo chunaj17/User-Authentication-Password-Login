@@ -10,4 +10,4 @@ const serverSchema = new Schema({
     required: true,
   },
 })
-export = model('server', serverSchema)
+export = model('users', serverSchema)
