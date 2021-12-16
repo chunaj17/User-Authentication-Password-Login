@@ -2,7 +2,7 @@ import express from 'express'
 import { router } from './routes/routes'
 import { connectDb } from './db/connect'
 const app = express()
-const port: number = 3000
+const port: number = 8080
 app.use(express.json())
 app.use('/api/v1', router)
 const start = async () => {
