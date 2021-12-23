@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 require('dotenv').config()
 import { JwtPayload, sign, verify, VerifyErrors } from 'jsonwebtoken'
 import { hash, compare } from 'bcrypt'
@@ -6,17 +6,9 @@ import users from '../model/model'
 import { userI } from '../interfaces/interface'
 let refeshTokens: string[] = []
 export const usersDb = async (req: Request, res: Response) => {
-  const authHeader: string | undefined = req.headers['authorization']
-  
-  
-  const token: string | undefined = authHeader && authHeader.split(' ')[1]
-  if (token === undefined) return res.sendStatus(403)
-  verify(token, process.env.ACCESS_TOKEN as string, async (err, user) => {
-    if (err) return res.sendStatus(403)
-    if (user === undefined) return res.sendStatus(500)
-    const data = await users.findOne({ name: user.name })
-    res.status(200).json({ data })
-  })
+  const username = res.locals.username
+  const data = await users.findOne({ name: username })
+  res.status(200).json({ data })
 }
 export const signUp = async (req: Request, res: Response) => {
   const { name, password } = req.body

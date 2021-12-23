@@ -7,12 +7,13 @@ import {
   signUp,
   usersDb,
 } from '../controllers/serverFun'
+import { authorizeUser } from '../middleware/authorization'
 import { validateReq } from '../validators/validationResult'
 import { rules } from '../validators/validationRule'
 const router = Router()
 router
   .route('/users')
-  .get(usersDb)
+  .get(authorizeUser, usersDb)
   .post(rules('validateBoth'), validateReq, signUp)
   .delete(delUser)
 router.route('/users/login').post(rules('validLogin'), validateReq, login)
